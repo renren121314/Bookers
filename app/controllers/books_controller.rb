@@ -10,7 +10,8 @@ class BooksController < ApplicationController
       flash[:notice] = 'Book was successfully created.'
       redirect_to book_path(@book.id)
     else
-      render :new
+      @books = Book.all
+      render :index
     end
   end
 
@@ -23,14 +24,12 @@ class BooksController < ApplicationController
   end
 
   def update
-    book = Book.find(params[:id])
-    if book.save
-      book.update(book_params)
+    @book = Book.find(params[:id])
+    if @book.update(book_params)
       flash[:notice] = 'Book was successfully updated.'
-      redirect_to book_path(book.id)
+      redirect_to book_path(@book.id)
     else
-      flash[:alert] = 'タイトルや本文を空白にすることはできません'
-      redirect_to edit_book_path(@book.id)
+      render :edit
     end
   end
 
